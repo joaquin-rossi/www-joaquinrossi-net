@@ -3,7 +3,7 @@ import "./globals.css";
 import React from "react";
 
 export const metadata: Metadata = {
-    title: "Joaquín Rossi",
+    title: "joaquinrossi.net$",
 };
 
 export const viewport: Viewport = {
