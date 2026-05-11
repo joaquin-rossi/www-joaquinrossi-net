@@ -64,9 +64,10 @@ export type FilePermTriad = {
 
 type R = "r" | "-";
 type W = "w" | "-";
-type X = "x" | "s" | "S" | "-";
-type T = "x" | "t" | "T" | "-";
-export type FilePermString = `${R}${W}${X}${R}${W}${X}${R}${W}${T}`;
+type X = "x" | "-";
+type XUG = X | "s" | "S";
+type XO = X | "t" | "T";
+export type FilePermString = `${R}${W}${XUG}${R}${W}${XUG}${R}${W}${XO}`;
 
 export function filePermsRead(txt: FilePermString): FilePerms {
     const validChars = /^[r-][w-][xsS-][r-][w-][xsS-][r-][w-][xtT-]$/;

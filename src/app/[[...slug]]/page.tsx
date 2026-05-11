@@ -1,10 +1,11 @@
-import {requireNonNull} from "@/src/util/util";
 import {DirectoryFile} from "@/src/file-system/directory-file";
 import {StaticRegularFile} from "@/src/file-system/static-regular-file";
 import {File, FileCdParams, filePermsRead, Path, pathShow, ps1, SimpleFileParams} from "@/src/file-system/file-system";
 import {PathLinkFile} from "@/src/file-system/path-link-file";
 import {WebLinkFile} from "@/src/file-system/web-link-file";
-import {TerminalFile} from "@/src/file-system/terminal/terminal-file";
+import {WebViewFile} from "@/src/file-system/web-view-file";
+
+const buildDate = new Date(process.env.NEXT_PUBLIC_BUILD_DATE as any);
 
 const params: SimpleFileParams = {
     perms: filePermsRead("rw-r--r--"),
@@ -12,15 +13,29 @@ const params: SimpleFileParams = {
     user: "www",
     group: "www",
     size: 1,
-    date: new Date(),
+    date: buildDate,
 };
 
 const root: File = new DirectoryFile(
     params,
     [
-        ["bin", new TerminalFile(params)],
         ["blog", new DirectoryFile(params, [])],
         ["complaints", new PathLinkFile(params, ["dev", "null"])],
+        ["demo", function demoDir() {
+            const demoExeParams = {
+                ...params,
+                perms: filePermsRead("rwxr-xr-x")
+            };
+
+            return new DirectoryFile(params, [
+                ["dissolve", new WebViewFile(demoExeParams, "/godot-build/dissolve/dissolve.html")],
+                ["dither-transparency", new WebViewFile(demoExeParams, "/godot-build/dither-transparency/dither-transparency.html")],
+                ["fire-contour", new WebViewFile(demoExeParams, "/godot-build/fire-contour/fire-contour.html")],
+                ["fire-shimmer", new WebViewFile(demoExeParams, "/godot-build/fire-shimmer/fire-shimmer.html")],
+                ["magic-shield", new WebViewFile(demoExeParams, "/godot-build/magic-shield/magic-shield.html")],
+                ["water", new WebViewFile(demoExeParams, "/godot-build/water/water.html")],
+            ]);
+        }()],
         ["key.asc", new StaticRegularFile(params)],
         ["links", new DirectoryFile(params, [
             ["email", new WebLinkFile(params, "mailto:joaquin@joaquinrossi.net")],
@@ -42,21 +57,18 @@ export default async function Home(
     const parentPath = path.slice(0, -1);
     const name = path.at(-1);
 
-    try {
-        const parentFile = requireNonNull(
-            cd(root, {path: parentPath}),
-            `File not found (path = ${pathShow(parentPath)})`
-        );
-        const file = requireNonNull(
-            name == null ? parentFile : cd(parentFile, {path: [name]}),
-            `File not found (path = ${pathShow(path)})`
-        );
-
-        return <div className="p-4 h-screen flex flex-col">
-            {file.show({path, parent: parentFile})}
+    const parentFile = cd(root, {path: parentPath});
+    if (parentFile == null) {
+        return <div className="p-4">
+            <pre>
+                {ps1([])} cd {pathShow(parentPath)} {"\n"}
+                cd: {pathShow(parentPath)}: No such file or directory
+            </pre>
         </div>;
-    } catch (e) {
-        console.error(e);
+    }
+
+    const file = name == null ? parentFile : cd(parentFile, {path: [name]});
+    if (file == null) {
         return <div className="p-4">
             <pre>
                 {ps1(parentPath)} file {name} {"\n"}
@@ -64,4 +76,8 @@ export default async function Home(
             </pre>
         </div>;
     }
+
+    return <div className="p-4 h-screen flex flex-col">
+        {file.show({path, parent: parentFile})}
+    </div>;
 }
