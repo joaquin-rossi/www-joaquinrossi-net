@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   deploy:
-    uses: joaquin-rossi/joaco-k8s/.github/workflows/deploy-image.yaml@master
+    uses: joaquin-rossi/workflows/.github/workflows/deploy-image.yaml@master
     with:
       app: www-joaquinrossi-net
     secrets: inherit
