@@ -1,0 +1,57 @@
+name: deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# un deploy a la vez: si se mergean dos seguidos, el segundo espera
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  REGISTRY: lax.vultrcr.com/joacr
+  APP: www-joaquinrossi-net
+  GITOPS_REPO: joaquin-rossi/joaco-k8s
+  GITOPS_PATH: gitops/apps/www-joaquinrossi-net
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag
+        id: tag
+        run: echo "tag=$(date -u +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/login-action@v3
+        with:
+          registry: lax.vultrcr.com
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.APP }}:${{ steps.tag.outputs.tag }}
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.GITOPS_REPO }}
+          ssh-key: ${{ secrets.GITOPS_DEPLOY_KEY }}
+          path: gitops
+
+      - name: Actualizar imagen en gitops
+        working-directory: gitops
+        run: |
+          image="$REGISTRY/$APP:${{ steps.tag.outputs.tag }}"
+          (cd "$GITOPS_PATH" && kustomize edit set image "$APP=$image")
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$GITOPS_PATH"
+          git commit -m "deploy $APP:${{ steps.tag.outputs.tag }}"
+          for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 5; done
+          exit 1
