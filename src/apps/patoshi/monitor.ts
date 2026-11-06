@@ -24,7 +24,7 @@ const BATCH_SIZE = 300;
 /** pausa entre requests, para no cargarle la API: el chequeo entero tarda unos 3 minutos */
 const PAUSE_MS = 2_000;
 /** cada cuánto se repite el chequeo */
-export const INTERVAL_MS = 15 * 60 * 1_000;
+export const INTERVAL_MS = 60 * 60 * 1_000;
 /** si una respuesta llega a este largo puede estar cortada (rest-default-max-address-summary-txs) */
 const MAX_SUMMARY_TXS = 5_000;
 const ATTEMPTS = 4;
@@ -188,7 +188,7 @@ type Global = typeof globalThis & {
     [TIMER]?: ReturnType<typeof setInterval>;
 };
 
-/** chequea ya y después cada 15 minutos */
+/** chequea ya y después cada 1 hora */
 export function startMonitor() {
     const global = globalThis as Global;
     clearInterval(global[TIMER]); // en dev el plugin se puede volver a cargar

@@ -234,7 +234,7 @@ function Patoshi() {
                 49,973, each one paying 50 BTC to its own public key.
             </p>
             <p>
-                When the server starts, and then every 15 minutes, it asks{" "}
+                When the server starts, and then every hour, it asks{" "}
                 <ExternalLink href="https://mempool.space/">
                     mempool.space
                 </ExternalLink>{" "}
