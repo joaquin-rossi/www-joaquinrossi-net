@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ExplorerRouteImport } from './routes/_explorer'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ExplorerIndexRouteImport } from './routes/_explorer/index'
+import { Route as ExplorerPatoshiDotexeRouteImport } from './routes/_explorer/patoshi[.]exe'
 import { Route as ExplorerBlogIndexRouteImport } from './routes/_explorer/blog/index'
 import { Route as ExplorerBlogNameRouteImport } from './routes/_explorer/blog/$name'
 
@@ -29,6 +30,11 @@ const ExplorerIndexRoute = ExplorerIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ExplorerRoute,
 } as any)
+const ExplorerPatoshiDotexeRoute = ExplorerPatoshiDotexeRouteImport.update({
+  id: '/patoshi.exe',
+  path: '/patoshi.exe',
+  getParentRoute: () => ExplorerRoute,
+} as any)
 const ExplorerBlogIndexRoute = ExplorerBlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -43,11 +49,13 @@ const ExplorerBlogNameRoute = ExplorerBlogNameRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof ExplorerIndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/patoshi.exe': typeof ExplorerPatoshiDotexeRoute
   '/blog/$name': typeof ExplorerBlogNameRoute
   '/blog/': typeof ExplorerBlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/patoshi.exe': typeof ExplorerPatoshiDotexeRoute
   '/': typeof ExplorerIndexRoute
   '/blog/$name': typeof ExplorerBlogNameRoute
   '/blog': typeof ExplorerBlogIndexRoute
@@ -56,19 +64,21 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_explorer': typeof ExplorerRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_explorer/patoshi.exe': typeof ExplorerPatoshiDotexeRoute
   '/_explorer/': typeof ExplorerIndexRoute
   '/_explorer/blog/$name': typeof ExplorerBlogNameRoute
   '/_explorer/blog/': typeof ExplorerBlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sitemap.xml' | '/blog/$name' | '/blog/'
+  fullPaths: '/' | '/sitemap.xml' | '/patoshi.exe' | '/blog/$name' | '/blog/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/sitemap.xml' | '/' | '/blog/$name' | '/blog'
+  to: '/sitemap.xml' | '/patoshi.exe' | '/' | '/blog/$name' | '/blog'
   id:
     | '__root__'
     | '/_explorer'
     | '/sitemap.xml'
+    | '/_explorer/patoshi.exe'
     | '/_explorer/'
     | '/_explorer/blog/$name'
     | '/_explorer/blog/'
@@ -102,6 +112,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExplorerIndexRouteImport
       parentRoute: typeof ExplorerRoute
     }
+    '/_explorer/patoshi.exe': {
+      id: '/_explorer/patoshi.exe'
+      path: '/patoshi.exe'
+      fullPath: '/patoshi.exe'
+      preLoaderRoute: typeof ExplorerPatoshiDotexeRouteImport
+      parentRoute: typeof ExplorerRoute
+    }
     '/_explorer/blog/': {
       id: '/_explorer/blog/'
       path: '/blog'
@@ -120,12 +137,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface ExplorerRouteChildren {
+  ExplorerPatoshiDotexeRoute: typeof ExplorerPatoshiDotexeRoute
   ExplorerIndexRoute: typeof ExplorerIndexRoute
   ExplorerBlogNameRoute: typeof ExplorerBlogNameRoute
   ExplorerBlogIndexRoute: typeof ExplorerBlogIndexRoute
 }
 
 const ExplorerRouteChildren: ExplorerRouteChildren = {
+  ExplorerPatoshiDotexeRoute: ExplorerPatoshiDotexeRoute,
   ExplorerIndexRoute: ExplorerIndexRoute,
   ExplorerBlogNameRoute: ExplorerBlogNameRoute,
   ExplorerBlogIndexRoute: ExplorerBlogIndexRoute,

@@ -7,10 +7,9 @@ export function FolderIcon() {
     );
 }
 
-export function LargeFolderIcon() {
-    return (
-        <img src="/icons/folder-closed-96.png" width={48} height={48} alt="" />
-    );
+/** ícono grande de la vista de íconos (archivo de 96px) */
+export function LargeIcon({ src }: { src: string }) {
+    return <img src={src} width={48} height={48} alt="" />;
 }
 
 export function Chevron() {

@@ -18,6 +18,8 @@ export default defineConfig({
         markdown(),
         tanstackStart(),
         nitro({
+            // el monitor de patoshi.exe
+            plugins: ["./src/apps/patoshi/plugin.ts"],
             routeRules: {
                 "/icons/**": publicCache,
                 "/favicon.ico": publicCache,

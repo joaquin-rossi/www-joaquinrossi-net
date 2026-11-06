@@ -8,6 +8,7 @@ export function DetailsGroup({
     created,
     modified,
     size,
+    extra = [],
 }: {
     name: string;
     type: string;
@@ -17,11 +18,14 @@ export function DetailsGroup({
     modified?: string;
     /** ya formateado, ej. "2 KB" */
     size?: string;
+    /** filas propias de la página, ya armadas ("Status: OK") */
+    extra?: string[];
 }) {
     const rows = [
         created && `Date Created: ${formatDate(created)}`,
         modified && `Date Modified: ${formatDate(modified)}`,
         size && `Size: ${size}`,
+        ...extra,
     ].filter(Boolean);
 
     return (
