@@ -21,7 +21,7 @@ const HEADERS = {
 
 /** máximo que acepta mempool.space por request */
 const BATCH_SIZE = 300;
-/** pausa entre requests, para no cargarle la API: el chequeo entero tarda unos 3 minutos */
+/** pausa entre requests, para no cargarle la API: el chequeo entero tarda unos 4 minutos */
 const PAUSE_MS = 2_000;
 /** cada cuánto se repite el chequeo */
 export const INTERVAL_MS = 60 * 60 * 1_000;
@@ -31,8 +31,11 @@ const ATTEMPTS = 4;
 
 type Wallet = { height: number; scripthash: string; sats: number };
 
+/** en desarrollo (vite dev) alcanza con un solo lote; el build chequea todas */
+const DEV = import.meta.env.DEV;
+
 /** las wallets del CSV: block_height,output_index,address,amount_btc,script_type */
-const wallets: Wallet[] = csv
+const allWallets: Wallet[] = csv
     .trim()
     .split("\n")
     .slice(1)
@@ -46,6 +49,8 @@ const wallets: Wallet[] = csv
             sats: btcToSats(amount!),
         };
     });
+
+const wallets = DEV ? allWallets.slice(0, BATCH_SIZE) : allWallets;
 
 /** "50.12" → 5012000000, sin pasar por float */
 function btcToSats(btc: string): number {
@@ -190,6 +195,11 @@ type Global = typeof globalThis & {
 
 /** chequea ya y después cada 1 hora */
 export function startMonitor() {
+    if (DEV) {
+        console.log(
+            `[patoshi] dev: checking only ${wallets.length} of ${allWallets.length} wallets`,
+        );
+    }
     const global = globalThis as Global;
     clearInterval(global[TIMER]); // en dev el plugin se puede volver a cargar
     const state = patoshiState();

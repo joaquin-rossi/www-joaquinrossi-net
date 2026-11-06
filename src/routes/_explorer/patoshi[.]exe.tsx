@@ -11,7 +11,7 @@ import { ExternalLink } from "../../components/ExternalLink";
 import { formatDate } from "../../date";
 
 const DESCRIPTION =
-    "patoshi.exe keeps an eye on the bitcoins mined by Satoshi Nakamoto and checks that they have not moved.";
+    "patoshi.exe checks that the bitcoins mined by Satoshi Nakamoto have not moved.";
 
 export const Route = createFileRoute("/_explorer/patoshi.exe")({
     loader: () => getPatoshiStatus(),
@@ -108,12 +108,7 @@ function Patoshi() {
                     height={32}
                     alt=""
                 />
-                <div>
-                    <h1>patoshi.exe</h1>
-                    <p>
-                        Keeps an eye on the bitcoins mined by Satoshi Nakamoto.
-                    </p>
-                </div>
+                <h1>patoshi.exe</h1>
             </header>
 
             <StatusBox status={status} />
@@ -173,52 +168,56 @@ function Patoshi() {
             {last && (
                 <>
                     <h2>Movements</h2>
-                    <table className="list">
-                        <thead>
-                            <tr>
-                                <th>Transaction</th>
-                                <th className="optional">Block</th>
-                                <th>Date</th>
-                                <th className="size">Moved out</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {last.outflows.map((outflow) => (
-                                <tr
-                                    key={outflow.txid}
-                                    className={
-                                        outflow.height >
-                                        LAST_KNOWN_OUTFLOW.height
-                                            ? "new"
-                                            : undefined
-                                    }
-                                >
-                                    <td>
-                                        <ExternalLink
-                                            href={`https://mempool.space/tx/${outflow.txid}`}
-                                            className="txid"
-                                            title={outflow.txid}
-                                        >
-                                            {shortTxid(outflow.txid)}
-                                        </ExternalLink>
-                                    </td>
-                                    <td className="optional muted">
-                                        {outflow.height.toLocaleString("en-US")}
-                                    </td>
-                                    <td className="muted">
-                                        {formatDate(
-                                            new Date(outflow.time * 1000)
-                                                .toISOString()
-                                                .slice(0, 10),
-                                        )}
-                                    </td>
-                                    <td className="size">
-                                        {formatBtc(outflow.sats)}
-                                    </td>
+                    <div className="table-scroll">
+                        <table className="list">
+                            <thead>
+                                <tr>
+                                    <th>Transaction</th>
+                                    <th className="optional">Block</th>
+                                    <th>Date</th>
+                                    <th className="size">Moved out</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {last.outflows.map((outflow) => (
+                                    <tr
+                                        key={outflow.txid}
+                                        className={
+                                            outflow.height >
+                                            LAST_KNOWN_OUTFLOW.height
+                                                ? "new"
+                                                : undefined
+                                        }
+                                    >
+                                        <td>
+                                            <ExternalLink
+                                                href={`https://mempool.space/tx/${outflow.txid}`}
+                                                className="txid"
+                                                title={outflow.txid}
+                                            >
+                                                {shortTxid(outflow.txid)}
+                                            </ExternalLink>
+                                        </td>
+                                        <td className="optional muted">
+                                            {outflow.height.toLocaleString(
+                                                "en-US",
+                                            )}
+                                        </td>
+                                        <td className="muted">
+                                            {formatDate(
+                                                new Date(outflow.time * 1000)
+                                                    .toISOString()
+                                                    .slice(0, 10),
+                                            )}
+                                        </td>
+                                        <td className="size">
+                                            {formatBtc(outflow.sats)}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     {last.outflows.length === 0 && (
                         <p className="empty">No movements.</p>
                     )}
@@ -302,15 +301,12 @@ function StatusBox({ status }: { status: PatoshiStatus }) {
             const sats = moved.reduce((total, o) => total + o.sats, 0);
             icon = "/icons/security-error-64.png";
             title = "Satoshi's coins have moved";
+            const since = `block ${LAST_KNOWN_OUTFLOW.height.toLocaleString("en-US")} (December 2017)`;
             body = (
                 <p>
                     {moved.length === 1
-                        ? "1 transaction"
-                        : `${moved.length} transactions`}{" "}
-                    took {formatBtc(sats)} out of the Patoshi wallets after
-                    block {LAST_KNOWN_OUTFLOW.height.toLocaleString("en-US")}.
-                    The newest one is in block{" "}
-                    {moved[0]!.height.toLocaleString("en-US")}.
+                        ? `A transaction in block ${moved[0]!.height.toLocaleString("en-US")} took ${formatBtc(sats)} out of the Patoshi wallets, the first movement since ${since}.`
+                        : `${moved.length} transactions took ${formatBtc(sats)} out of the Patoshi wallets, starting in block ${moved.at(-1)!.height.toLocaleString("en-US")}. They are the first movements since ${since}.`}
                 </p>
             );
             break;
@@ -321,7 +317,7 @@ function StatusBox({ status }: { status: PatoshiStatus }) {
             body = (
                 <p>
                     None of the {last!.wallets.toLocaleString("en-US")} wallets
-                    has lost any balance since December 2017, as of block{" "}
+                    have lost any balance since December 2017, as of block{" "}
                     {last!.tipHeight.toLocaleString("en-US")}.
                 </p>
             );

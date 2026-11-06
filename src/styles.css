@@ -558,11 +558,6 @@ body {
     margin: 0;
 }
 
-.app-head p {
-    margin: 0;
-    color: var(--muted);
-}
-
 /* aviso con ícono, como los globos de información de XP */
 .status {
     display: flex;
@@ -668,6 +663,11 @@ body {
 
 .patoshi .list {
     font-size: 13px;
+}
+
+/* en pantallas angostas la tabla se desplaza de costado en vez de romper la página */
+.table-scroll {
+    overflow-x: auto;
 }
 
 .list .txid {
