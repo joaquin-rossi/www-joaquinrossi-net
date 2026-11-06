@@ -3,7 +3,12 @@ import { posts } from "../posts";
 import { SITE_URL } from "../site";
 
 // páginas públicas
-const pages = ["/", "/blog", ...posts.map((post) => `/blog/${post.name}`)];
+const pages = [
+    "/",
+    "/blog",
+    "/patoshi.exe",
+    ...posts.map((post) => `/blog/${post.name}`),
+];
 
 export const Route = createFileRoute("/sitemap.xml")({
     server: {

@@ -531,6 +531,160 @@ body {
     padding-left: 24px;
 }
 
+/* ---------- patoshi.exe ---------- */
+
+.patoshi {
+    max-width: 760px;
+}
+
+.patoshi h2 {
+    margin: 20px 0 8px;
+    font-size: 15px;
+    color: var(--group-title);
+}
+
+.patoshi p {
+    margin: 0 0 10px;
+}
+
+.app-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.app-head h1 {
+    margin: 0;
+}
+
+.app-head p {
+    margin: 0;
+    color: var(--muted);
+}
+
+/* aviso con ícono, como los globos de información de XP */
+.status {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: linear-gradient(#ffffff, #f4f7fd);
+    border: 1px solid var(--field-border);
+    border-radius: 3px;
+}
+
+.status img {
+    flex: none;
+}
+
+.patoshi .status h2 {
+    margin: 4px 0 4px;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.patoshi .status p {
+    margin: 0;
+}
+
+.status--intact {
+    background: linear-gradient(#ffffff, #eef8ea);
+    border-color: #6fb35f;
+}
+
+.status--moved {
+    background: linear-gradient(#ffffff, #fdeceb);
+    border-color: #d24b3e;
+}
+
+.status--failed {
+    background: linear-gradient(#ffffff, #fff8e1);
+    border-color: #e5a01a;
+}
+
+/* barra de progreso con bloques verdes */
+.progress {
+    height: 16px;
+    margin-top: 8px;
+    padding: 2px;
+    background: #ffffff;
+    border: 1px solid #686868;
+    border-radius: 3px;
+}
+
+.progress > div {
+    height: 100%;
+    background: repeating-linear-gradient(
+        to right,
+        #2fb12f 0 8px,
+        transparent 8px 10px
+    );
+    transition: width 0.3s;
+}
+
+/* cuadros agrupados (fieldset) de XP */
+.groupboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.groupbox {
+    flex: 1 1 300px;
+    min-width: 0;
+    margin: 0;
+    padding: 6px 12px 10px;
+    border: 1px solid #d0d0bf;
+    border-radius: 4px;
+}
+
+.groupbox legend {
+    padding: 0 3px;
+    color: #0046d5;
+}
+
+.props {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2px 12px;
+    margin: 0;
+}
+
+.props dt {
+    color: var(--muted);
+}
+
+.props dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.patoshi-note {
+    margin-top: 10px;
+    color: #9c5d00;
+}
+
+.patoshi .list {
+    font-size: 13px;
+}
+
+.list .txid {
+    font-family: "Lucida Console", Consolas, monospace;
+    font-size: 12px;
+}
+
+.list tbody tr:hover a {
+    color: #ffffff;
+}
+
+/* salidas posteriores al último movimiento conocido */
+.list tr.new td {
+    color: #c00000;
+    font-weight: bold;
+}
+
 /* ---------- botón del panel (solo celular) ---------- */
 
 /* botón de XP en versión discreta: mismo borde que el campo de dirección */

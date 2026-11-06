@@ -14,19 +14,25 @@ Microsoft icons; all rights belong to their respective owners.
 Nothing in this folder is served by the site (it is excluded from the Docker image). The
 icons that are used are copied, downscaled, into `public/`:
 
-| File in `public/`            | Source                                       |
-| ---------------------------- | -------------------------------------------- |
-| `favicon.ico` (16, 32, 48)   | `Windows XP Icons/Control Panel.png`         |
-| `icons/folder-closed-32.png` | `Windows XP Icons/Folder Closed.png`         |
-| `icons/folder-closed-96.png` | `Windows XP Icons/Folder Closed.png`         |
-| `icons/control-panel-64.png` | `Windows XP Icons/Control Panel.png`         |
-| `icons/home-32.png`          | `Windows XP Icons/IE Home.png`               |
-| `icons/email-32.png`         | `Windows XP Icons/Email.png`                 |
-| `icons/internet-32.png`      | `Windows XP Icons/Internet Shortcut.png`     |
-| `icons/key-32.png`           | `Windows XP Icons/Key.png`                   |
-| `icons/address-book-32.png`  | `Windows XP Icons/Address Book.png`          |
-| `icons/text-document-32.png` | `Windows XP Icons/Generic Text Document.png` |
-| `icons/up-32.png`            | `Windows XP Icons/Up.png`                    |
+| File in `public/`                 | Source                                       |
+| --------------------------------- | -------------------------------------------- |
+| `favicon.ico` (16, 32, 48)        | `Windows XP Icons/Control Panel.png`         |
+| `icons/folder-closed-32.png`      | `Windows XP Icons/Folder Closed.png`         |
+| `icons/folder-closed-96.png`      | `Windows XP Icons/Folder Closed.png`         |
+| `icons/control-panel-64.png`      | `Windows XP Icons/Control Panel.png`         |
+| `icons/home-32.png`               | `Windows XP Icons/IE Home.png`               |
+| `icons/email-32.png`              | `Windows XP Icons/Email.png`                 |
+| `icons/internet-32.png`           | `Windows XP Icons/Internet Shortcut.png`     |
+| `icons/key-32.png`                | `Windows XP Icons/Key.png`                   |
+| `icons/address-book-32.png`       | `Windows XP Icons/Address Book.png`          |
+| `icons/text-document-32.png`      | `Windows XP Icons/Generic Text Document.png` |
+| `icons/up-32.png`                 | `Windows XP Icons/Up.png`                    |
+| `icons/application-window-96.png` | `Windows XP Icons/Application Window.png`    |
+| `icons/application-window-64.png` | `Windows XP Icons/Application Window.png`    |
+| `icons/security-ok-64.png`        | `Windows XP Icons/Security - Ok.png`         |
+| `icons/security-error-64.png`     | `Windows XP Icons/Security Error.png`        |
+| `icons/security-alert-64.png`     | `Windows XP Icons/Security Alert.png`        |
+| `icons/information-64.png`        | `Windows XP Icons/Information.png`           |
 
 They are generated with ImageMagick at twice the size they are displayed at:
 
@@ -43,4 +49,10 @@ magick "$V/Key.png" -filter Lanczos -resize 32x32 -strip public/icons/key-32.png
 magick "$V/Address Book.png" -filter Lanczos -resize 32x32 -strip public/icons/address-book-32.png
 magick "$V/Generic Text Document.png" -filter Lanczos -resize 32x32 -strip public/icons/text-document-32.png
 magick "$V/Up.png" -filter Lanczos -resize 32x32 -strip public/icons/up-32.png
+magick "$V/Application Window.png" -filter Lanczos -resize 96x96 -strip public/icons/application-window-96.png
+magick "$V/Application Window.png" -filter Lanczos -resize 64x64 -strip public/icons/application-window-64.png
+magick "$V/Security - Ok.png" -filter Lanczos -resize 64x64 -strip public/icons/security-ok-64.png
+magick "$V/Security Error.png" -filter Lanczos -resize 64x64 -strip public/icons/security-error-64.png
+magick "$V/Security Alert.png" -filter Lanczos -resize 64x64 -strip public/icons/security-alert-64.png
+magick "$V/Information.png" -filter Lanczos -resize 64x64 -strip public/icons/information-64.png
 ```

@@ -1,7 +1,14 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { LargeFolderIcon } from "../../components/icons";
+import { LargeIcon } from "../../components/icons";
 
-const items = [{ to: "/blog", label: "Blog" }] as const;
+const items = [
+    { to: "/blog", label: "Blog", icon: "/icons/folder-closed-96.png" },
+    {
+        to: "/patoshi.exe",
+        label: "patoshi.exe",
+        icon: "/icons/application-window-96.png",
+    },
+] as const;
 
 export const Route = createFileRoute("/_explorer/")({
     component: Home,
@@ -13,7 +20,7 @@ function Home() {
             {items.map((item) => (
                 <li key={item.to}>
                     <Link to={item.to} className="icon">
-                        <LargeFolderIcon />
+                        <LargeIcon src={item.icon} />
                         <span className="icon-label">{item.label}</span>
                     </Link>
                 </li>
