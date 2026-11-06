@@ -403,15 +403,37 @@ body {
 
 .post {
     max-width: 720px;
+    line-height: 1.45;
+}
+
+/* párrafos, listas, tablas, etc.: menos aire que el default del navegador */
+.post p,
+.post ul,
+.post ol,
+.post table,
+.post pre,
+.post blockquote {
+    margin: 0 0 10px;
+}
+
+.post li + li,
+.post li > ul,
+.post li > ol {
+    margin-top: 2px;
+}
+
+.post li > ul,
+.post li > ol {
+    margin-bottom: 0;
 }
 
 .post-date {
-    margin: -8px 0 16px;
+    margin: -8px 0 14px;
     color: var(--muted);
 }
 
 .post h2 {
-    margin: 24px 0 8px;
+    margin: 18px 0 6px;
     font-size: 15px;
     color: var(--group-title);
 }
@@ -434,7 +456,6 @@ body {
 }
 
 .post blockquote {
-    margin: 12px 0;
     padding: 4px 12px;
     color: #444444;
     border-left: 3px solid var(--pane-top);
@@ -442,18 +463,17 @@ body {
 }
 
 .post h3 {
-    margin: 20px 0 6px;
+    margin: 14px 0 4px;
     font-size: 14px;
 }
 
 .post h4 {
-    margin: 16px 0 6px;
+    margin: 12px 0 4px;
     font-size: 13px;
 }
 
 /* tablas: mismo encabezado que la vista de detalles */
 .post table {
-    margin: 12px 0;
     border-collapse: collapse;
 }
 
@@ -493,7 +513,7 @@ body {
 }
 
 .post hr {
-    margin: 20px 0;
+    margin: 14px 0;
     border: 0;
     border-top: 1px solid var(--chrome-line);
 }
