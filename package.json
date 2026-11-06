@@ -20,7 +20,9 @@
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
         "@vitejs/plugin-react": "^6.2.1",
+        "marked": "18.1.1",
         "nitro": "3.0.261103-rc",
+        "shiki": "4.5.0",
         "typescript": "^7.0.2",
         "vite": "^8.3.5"
     },

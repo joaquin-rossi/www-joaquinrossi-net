@@ -1,0 +1,590 @@
+:root {
+    --font: Tahoma, Verdana, "Segoe UI", sans-serif;
+
+    --pane-top: #7ba2e7;
+    --pane-bottom: #6375d6;
+    --group-body: #d6dff7;
+    --group-head-from: #ffffff;
+    --group-head-to: #c6d3f7;
+    --group-title: #215dc6;
+    --group-title-hover: #428eff;
+    --primary-head-from: #0c32d0;
+    --primary-head-to: #2d61d2;
+    --primary-body: #eff3ff;
+
+    --chrome: #ece9d8;
+    --chrome-line: #d6d2c2;
+    --field-border: #7f9db9;
+    --select: #316ac5;
+    --muted: #808080;
+    --text: #000000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+/* todo el estilo cuelga de .explorer: las rutas fuera del marco no lo heredan */
+
+.explorer {
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--text);
+    background: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.explorer a {
+    color: var(--group-title);
+    text-decoration: none;
+}
+
+.explorer a:hover {
+    color: var(--group-title-hover);
+    text-decoration: underline;
+}
+
+/* ---------- barra superior ---------- */
+
+.bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 16px;
+    background: var(--chrome);
+    border-bottom: 1px solid var(--chrome-line);
+}
+
+.bar .brand {
+    font-weight: bold;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.bar .brand:hover {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.address {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.address-label {
+    color: var(--muted);
+}
+
+.address-field {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    height: 22px;
+    padding: 0 6px;
+    background: #ffffff;
+    border: 1px solid var(--field-border);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.crumbs {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.crumbs a {
+    color: var(--text);
+}
+
+.crumbs a:hover {
+    color: var(--group-title);
+}
+
+.address .up-button {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 22px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+.address .up-button:hover {
+    background: linear-gradient(#ffffff, #ece9d8);
+    border-color: #cecec3;
+}
+
+.address .up-button[aria-disabled="true"] {
+    filter: grayscale(1);
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* ---------- layout ---------- */
+
+.layout {
+    flex: 1;
+    display: flex;
+}
+
+/* ---------- panel de tareas ---------- */
+
+.menu {
+    flex: 0 0 220px;
+    padding: 12px;
+    background: linear-gradient(var(--pane-top), var(--pane-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.group summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 25px;
+    padding: 0 6px 0 12px;
+    border-radius: 3px 3px 0 0;
+    background: linear-gradient(
+        to right,
+        var(--group-head-from),
+        var(--group-head-to)
+    );
+    color: var(--group-title);
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+}
+
+.group summary {
+    position: relative;
+}
+
+.group--with-icon summary {
+    padding-left: 44px;
+}
+
+/* el ícono grande sobresale por arriba del encabezado */
+.group-icon {
+    position: absolute;
+    left: 6px;
+    bottom: 0;
+}
+
+.group summary::-webkit-details-marker {
+    display: none;
+}
+
+.group summary:hover {
+    color: var(--group-title-hover);
+}
+
+.chevron {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    border: 1px solid #ffffff;
+    background: linear-gradient(#ffffff, #c6d3f7);
+    box-shadow: 0 0 0 1px #b3c3ee;
+    display: grid;
+    place-items: center;
+    color: var(--group-title);
+    transition: transform 0.15s;
+}
+
+.group:not([open]) .chevron {
+    transform: rotate(180deg);
+}
+
+.group-body {
+    padding: 10px 12px;
+    background: var(--group-body);
+    border: 1px solid #ffffff;
+    border-top: 0;
+    line-height: 1.5;
+}
+
+.group-body ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.group-body li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.group-body li + li {
+    margin-top: 4px;
+}
+
+.group-body li img {
+    flex: none;
+}
+
+.group--primary summary {
+    background: linear-gradient(
+        to right,
+        var(--primary-head-from),
+        var(--primary-head-to)
+    );
+    color: #ffffff;
+}
+
+.group--primary summary:hover {
+    color: #c6d3f7;
+}
+
+.group--primary .group-body {
+    background: var(--primary-body);
+}
+
+/* grupo Details */
+
+.details {
+    display: flex;
+    flex-direction: column;
+}
+
+.details-gap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+/* ---------- contenido ---------- */
+
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ---------- vista de íconos ---------- */
+
+.icons {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 8px;
+    margin: 0;
+    padding: 16px;
+    list-style: none;
+}
+
+.icons .icon {
+    width: 88px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    color: var(--text);
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+}
+
+.icons .icon-label {
+    padding: 1px 3px;
+    border: 1px dotted transparent;
+}
+
+.icons .icon:hover .icon-label {
+    text-decoration: underline;
+    color: var(--group-title);
+}
+
+.icons .icon:focus-visible .icon-label {
+    background: var(--select);
+    color: #ffffff;
+    border-color: #ffffff;
+    outline: 1px dotted var(--select);
+}
+
+/* ---------- vista de detalles ---------- */
+
+.list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.list th {
+    text-align: left;
+    font-weight: normal;
+    padding: 3px 8px;
+    background: linear-gradient(#ffffff, #f1efe2);
+    border-bottom: 2px solid var(--chrome-line);
+    border-right: 1px solid var(--chrome-line);
+    white-space: nowrap;
+}
+
+.list th:last-child {
+    border-right: 0;
+}
+
+.list td {
+    padding: 3px 8px;
+    white-space: nowrap;
+}
+
+.list td:first-child {
+    width: 100%;
+}
+
+.list tbody tr:hover {
+    background: var(--select);
+    color: #ffffff;
+}
+
+.list .size {
+    text-align: right;
+}
+
+.list .muted {
+    color: var(--muted);
+}
+
+.list tbody tr:hover .muted {
+    color: inherit;
+}
+
+.empty {
+    padding: 24px 0;
+    text-align: center;
+    color: var(--muted);
+}
+
+/* ---------- contenido libre ---------- */
+
+.page {
+    max-width: 680px;
+    padding: 16px 24px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.page h1 {
+    margin: 0 0 12px;
+    font-size: 18px;
+    color: var(--group-title);
+}
+
+/* ---------- posts ---------- */
+
+.list .file {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: inherit;
+}
+
+.list tbody tr:hover .file {
+    color: #ffffff;
+}
+
+.post {
+    max-width: 720px;
+}
+
+.post-date {
+    margin: -8px 0 16px;
+    color: var(--muted);
+}
+
+.post h2 {
+    margin: 24px 0 8px;
+    font-size: 15px;
+    color: var(--group-title);
+}
+
+.post code {
+    font-family: "Lucida Console", Consolas, monospace;
+    font-size: 12px;
+}
+
+.post :not(pre) > code {
+    padding: 1px 3px;
+    background: var(--group-body);
+}
+
+.post pre {
+    padding: 8px 12px;
+    overflow-x: auto;
+    background: #ffffff;
+    border: 1px solid var(--field-border);
+}
+
+.post blockquote {
+    margin: 12px 0;
+    padding: 4px 12px;
+    color: #444444;
+    border-left: 3px solid var(--pane-top);
+    background: var(--primary-body);
+}
+
+.post h3 {
+    margin: 20px 0 6px;
+    font-size: 14px;
+}
+
+.post h4 {
+    margin: 16px 0 6px;
+    font-size: 13px;
+}
+
+/* tablas: mismo encabezado que la vista de detalles */
+.post table {
+    margin: 12px 0;
+    border-collapse: collapse;
+}
+
+.post th,
+.post td {
+    padding: 3px 8px;
+    border: 1px solid var(--chrome-line);
+}
+
+.post th {
+    font-weight: normal;
+    background: linear-gradient(#ffffff, #f1efe2);
+}
+
+.post th:not([align]) {
+    text-align: left;
+}
+
+/* listas de tareas: sin viñeta, con el checkbox en su lugar */
+.post li:has(> input[type="checkbox"]) {
+    list-style: none;
+    margin-left: -20px;
+}
+
+.post li > input[type="checkbox"] {
+    margin: 0 6px 0 0;
+    vertical-align: middle;
+}
+
+.post kbd {
+    padding: 0 4px;
+    font: 11px var(--font);
+    background: linear-gradient(#ffffff, #ece9d8);
+    border: 1px solid #9d9d92;
+    border-bottom-width: 2px;
+    border-radius: 3px;
+}
+
+.post hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid var(--chrome-line);
+}
+
+.post img {
+    max-width: 100%;
+}
+
+.post blockquote > p {
+    margin: 4px 0;
+}
+
+.post ul,
+.post ol {
+    padding-left: 24px;
+}
+
+/* ---------- botón del panel (solo celular) ---------- */
+
+/* botón de XP en versión discreta: mismo borde que el campo de dirección */
+.menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 22px;
+    padding: 0 10px;
+    font: inherit;
+    font-size: 11px;
+    line-height: 1;
+    color: var(--text);
+    background: linear-gradient(#ffffff, #f4f3ee);
+    border: 1px solid var(--field-border);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* borde naranja suave al pasar el mouse */
+.menu-toggle:hover {
+    border-color: #e5a01a;
+}
+
+/* hundido mientras el menú está abierto */
+.menu-toggle[aria-expanded="true"] {
+    background: #e5e4de;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.12);
+}
+
+/* rectángulo punteado de foco, como en XP */
+.menu-toggle:focus-visible {
+    outline: 1px dotted #000000;
+    outline-offset: -3px;
+}
+
+/* ---------- celular ---------- */
+
+@media (max-width: 640px) {
+    .bar {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .menu-toggle {
+        display: inline-flex;
+        margin-left: auto;
+    }
+
+    /* en celular la tabla queda con nombre y fecha de modificación */
+    .list .optional {
+        display: none;
+    }
+
+    .address {
+        flex-basis: 100%;
+        order: 1;
+    }
+
+    .address-label {
+        display: none;
+    }
+
+    .layout {
+        flex-direction: column;
+    }
+
+    /* el panel queda escondido hasta tocar "Menu", y aparece arriba del contenido */
+    .menu {
+        display: none;
+        flex-basis: auto;
+    }
+
+    .explorer[data-menu="open"] .menu {
+        display: flex;
+    }
+}

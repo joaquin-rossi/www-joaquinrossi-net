@@ -9,50 +9,135 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExplorerRouteImport } from './routes/_explorer'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ExplorerIndexRouteImport } from './routes/_explorer/index'
+import { Route as ExplorerBlogIndexRouteImport } from './routes/_explorer/blog/index'
+import { Route as ExplorerBlogNameRouteImport } from './routes/_explorer/blog/$name'
 
-const IndexRoute = IndexRouteImport.update({
+const ExplorerRoute = ExplorerRouteImport.update({
+  id: '/_explorer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExplorerIndexRoute = ExplorerIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => ExplorerRoute,
+} as any)
+const ExplorerBlogIndexRoute = ExplorerBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => ExplorerRoute,
+} as any)
+const ExplorerBlogNameRoute = ExplorerBlogNameRouteImport.update({
+  id: '/blog/$name',
+  path: '/blog/$name',
+  getParentRoute: () => ExplorerRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof ExplorerIndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/$name': typeof ExplorerBlogNameRoute
+  '/blog/': typeof ExplorerBlogIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/': typeof ExplorerIndexRoute
+  '/blog/$name': typeof ExplorerBlogNameRoute
+  '/blog': typeof ExplorerBlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_explorer': typeof ExplorerRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_explorer/': typeof ExplorerIndexRoute
+  '/_explorer/blog/$name': typeof ExplorerBlogNameRoute
+  '/_explorer/blog/': typeof ExplorerBlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/sitemap.xml' | '/blog/$name' | '/blog/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/sitemap.xml' | '/' | '/blog/$name' | '/blog'
+  id:
+    | '__root__'
+    | '/_explorer'
+    | '/sitemap.xml'
+    | '/_explorer/'
+    | '/_explorer/blog/$name'
+    | '/_explorer/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  ExplorerRoute: typeof ExplorerRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_explorer': {
+      id: '/_explorer'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ExplorerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_explorer/': {
+      id: '/_explorer/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ExplorerIndexRouteImport
+      parentRoute: typeof ExplorerRoute
+    }
+    '/_explorer/blog/': {
+      id: '/_explorer/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof ExplorerBlogIndexRouteImport
+      parentRoute: typeof ExplorerRoute
+    }
+    '/_explorer/blog/$name': {
+      id: '/_explorer/blog/$name'
+      path: '/blog/$name'
+      fullPath: '/blog/$name'
+      preLoaderRoute: typeof ExplorerBlogNameRouteImport
+      parentRoute: typeof ExplorerRoute
     }
   }
 }
 
+interface ExplorerRouteChildren {
+  ExplorerIndexRoute: typeof ExplorerIndexRoute
+  ExplorerBlogNameRoute: typeof ExplorerBlogNameRoute
+  ExplorerBlogIndexRoute: typeof ExplorerBlogIndexRoute
+}
+
+const ExplorerRouteChildren: ExplorerRouteChildren = {
+  ExplorerIndexRoute: ExplorerIndexRoute,
+  ExplorerBlogNameRoute: ExplorerBlogNameRoute,
+  ExplorerBlogIndexRoute: ExplorerBlogIndexRoute,
+}
+
+const ExplorerRouteWithChildren = ExplorerRoute._addFileChildren(
+  ExplorerRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  ExplorerRoute: ExplorerRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
