@@ -34,13 +34,15 @@ icons that are used are copied, downscaled, into `public/`:
 | `icons/security-alert-64.png` | `Windows XP Icons/Security Alert.png`        |
 | `icons/information-64.png`    | `Windows XP Icons/Information.png`           |
 
-They are generated with ImageMagick at twice the size they are displayed at:
+They are generated with ImageMagick at twice the size they are displayed at. The icons for
+the icon view are trimmed and centered first, so they all line up regardless of the empty
+space in the source:
 
 ```sh
 V="vendor/windows-xp-icons/Windows XP Icons"
 magick "$V/Control Panel.png" -filter Lanczos -define icon:auto-resize=48,32,16 -strip public/favicon.ico
 magick "$V/Folder Closed.png" -filter Lanczos -resize 32x32 -strip public/icons/folder-closed-32.png
-magick "$V/Folder Closed.png" -filter Lanczos -resize 96x96 -strip public/icons/folder-closed-96.png
+magick "$V/Folder Closed.png" -trim +repage -filter Lanczos -resize 96x96 -background none -gravity center -extent 96x96 -strip public/icons/folder-closed-96.png
 magick "$V/Control Panel.png" -filter Lanczos -resize 64x64 -strip public/icons/control-panel-64.png
 magick "$V/IE Home.png" -filter Lanczos -resize 32x32 -strip public/icons/home-32.png
 magick "$V/Email.png" -filter Lanczos -resize 32x32 -strip public/icons/email-32.png
@@ -49,7 +51,7 @@ magick "$V/Key.png" -filter Lanczos -resize 32x32 -strip public/icons/key-32.png
 magick "$V/Address Book.png" -filter Lanczos -resize 32x32 -strip public/icons/address-book-32.png
 magick "$V/Generic Text Document.png" -filter Lanczos -resize 32x32 -strip public/icons/text-document-32.png
 magick "$V/Up.png" -filter Lanczos -resize 32x32 -strip public/icons/up-32.png
-magick "$V/Magnifier.png" -filter Lanczos -resize 96x96 -strip public/icons/magnifier-96.png
+magick "$V/Magnifier.png" -trim +repage -filter Lanczos -resize 96x96 -background none -gravity center -extent 96x96 -strip public/icons/magnifier-96.png
 magick "$V/Magnifier.png" -filter Lanczos -resize 64x64 -strip public/icons/magnifier-64.png
 magick "$V/Security - Ok.png" -filter Lanczos -resize 64x64 -strip public/icons/security-ok-64.png
 magick "$V/Security Error.png" -filter Lanczos -resize 64x64 -strip public/icons/security-error-64.png
