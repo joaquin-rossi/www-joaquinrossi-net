@@ -6,7 +6,7 @@ const items = [
     {
         to: "/patoshi.exe",
         label: "patoshi.exe",
-        icon: "/icons/application-window-96.png",
+        icon: "/icons/magnifier-96.png",
     },
 ] as const;
 

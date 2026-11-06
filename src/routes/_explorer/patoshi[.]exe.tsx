@@ -103,7 +103,7 @@ function Patoshi() {
         <div className="page patoshi">
             <header className="app-head">
                 <img
-                    src="/icons/application-window-64.png"
+                    src="/icons/magnifier-64.png"
                     width={32}
                     height={32}
                     alt=""
