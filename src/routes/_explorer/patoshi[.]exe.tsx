@@ -238,9 +238,8 @@ function Patoshi() {
                 <ExternalLink href="https://mempool.space/">
                     mempool.space
                 </ExternalLink>{" "}
-                for the confirmed transactions of all of them, 300 wallets at a
-                time, and checks that nothing has left since the last known
-                movement, in block{" "}
+                for the confirmed transactions of all of them and checks that
+                nothing has left since the last known movement, in block{" "}
                 {LAST_KNOWN_OUTFLOW.height.toLocaleString("en-US")} (December
                 2017). A few of these coins were spent in the early days, most
                 famously the 10 BTC Satoshi sent to Hal Finney in block 170.
